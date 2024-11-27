@@ -63,7 +63,7 @@ function check_root() {
 }
 function check_new_ver() {
   # deprecated
-  ct_new_ver=$(wget --no-check-certificate -qO- -t2 -T3 https://api.github.com/repos/ginuerzh/gost/releases/latest | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g;s/v//g')
+  ct_new_ver=$(wget --no-check-certificate -qO- -t2 -T3 https://ghp.ci/https://api.github.com/repos/ginuerzh/gost/releases/latest | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g;s/v//g')
   if [[ -z ${ct_new_ver} ]]; then
     ct_new_ver="2.11.2"
     echo -e "${Error} gost 最新版本获取失败，正在下载v${ct_new_ver}版"
@@ -97,9 +97,9 @@ function Install_ct() {
   [[ -z ${addyn} ]] && addyn="n"
   if [[ ${addyn} == [Yy] ]]; then
     rm -rf gost-linux-"$bit"-"$ct_new_ver".gz
-    wget --no-check-certificate https://gotunnel.oss-cn-shenzhen.aliyuncs.com/gost-linux-"$bit"-"$ct_new_ver".gz
-    gunzip gost-linux-"$bit"-"$ct_new_ver".gz
-    mv gost-linux-"$bit"-"$ct_new_ver" gost
+    wget --no-check-certificate https://ghp.ci/https://github.com/ginuerzh/gost/releases/download/v"$ct_new_ver"/gost_"$ct_new_ver"_linux_"$bit".tar.gz
+    tar -zxvf gost_"$ct_new_ver"_linux_"$bit".tar.gz gost
+   # mv gost-linux-"$bit"-"$ct_new_ver" gost
     mv gost /usr/bin/gost
     chmod -R 777 /usr/bin/gost
     wget --no-check-certificate https://ghp.ci/https://raw.githubusercontent.com/cibyyang/Multi-EasyGost/master/gost.service && chmod -R 777 gost.service && mv gost.service /usr/lib/systemd/system
